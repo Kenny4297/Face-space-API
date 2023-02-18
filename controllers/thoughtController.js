@@ -1,4 +1,5 @@
 const Thought = require('../models/Thought');
+const User = require('../models/User');
 
 module.exports = {
     async getThoughts(req, res) {
@@ -28,21 +29,19 @@ module.exports = {
 
     async createThought(req, res) {
         try {
-            const dbThoughtData = await Thought.create(req.body);
-
-            //Getting the username of the thought and the user id
-            const { username, userId } = req.params;
-            const { thoughtText } = req.body;
+            const { thoughtText, username, userId } = req.body;
+            console.log(username, userId);
 
             const newThought = await Thought.create({ thoughtText, username });
 
-            const updateUser = await User.findOneAndUpdate(
-                { _id: userId },
+            const getUser = await User.findByIdAndUpdate(userId,
                 { $push: { thoughts: newThought._id }},
                 { new: true }
             );
 
-            res.json(newThought);
+            console.log(getUser);
+
+            res.json(getUser);
         } catch (err) {
             console.log(err);
             res.status(500).json(err);
@@ -51,14 +50,15 @@ module.exports = {
 
     async updateThought(req, res) {
         try {
-            const updateThought = await Thought.findOneAndUpdate(
-                { _id: req.params.thoughtId},
-                req.body,
-
+            const updatedThought = await Thought.findByIdAndUpdate(
+                { _id: req.params.thoughtId}, {thoughtText: req.body.thoughtText},
+                
                 //This ensures that the updated thought is returned in the response instead of the original thought before the update
                 { new: true }
             );
-            if (!updateThought) {
+
+            console.log(updatedThought)
+            if (!updatedThought) {
                 res.status(404).json({ message: "No thought with that ID "});
             }
             res.json(updatedThought)

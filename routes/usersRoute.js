@@ -28,6 +28,6 @@ router.route('/:userId').put(updateUser);
 router.route('/:userId').delete(deleteUser);
 
 // /api/users/:userId/friends/:friend
-// AWAITING SEEDING FIRST BEFORE THIS IS EXECUTED FOR BETTER VISUALIZATION OF WHAT'S GOING ON
+
 
 module.exports = router;

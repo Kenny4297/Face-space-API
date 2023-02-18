@@ -29,7 +29,7 @@ module.exports = {
         }
     },
 
-    //"function" to get a single user
+    //"function" to create a single user
     async createUser(req, res) {
         try {
             const dbUserData = await User.create(req.body);
@@ -42,9 +42,8 @@ module.exports = {
 
     async updateUser(req, res) {
         try {
-            const updateUser = await User.findOneAndUpdate(
-                { _id: req.params.userId},
-                req.body,
+            const updateUser = await User.findOneAndUpdate({ _id: req.params.userId},
+                {username: req.body.username, email: req.body.email },
 
                 //This ensures that the updated User is returned in the response instead of the original User before the update
                 { new: true }
@@ -52,7 +51,7 @@ module.exports = {
             if (!updateUser) {
                 res.status(404).json({ message: "No User with that ID "});
             }
-            res.json(updatedUser)
+            res.json(updateUser)
             } catch (err) {
                 console.log(err);
                 res.status(500).json(err)
@@ -69,7 +68,7 @@ module.exports = {
                 }
 
                 //Delete all the associated  thoughts of the user we found in the last query, up above
-                await Thought.deleteMany({ username: deletedUser.username});
+                await Thought.deleteMany({ username: findUserToDelete.username});
 
                 res.json({ message: "User, and associated thoughts, deleted" });
             } catch (err) {
