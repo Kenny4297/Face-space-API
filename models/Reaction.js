@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const mongoose = require('mongoose');
 
 //'Reactions' are similar to replies
 const reactionSchema = new Schema({

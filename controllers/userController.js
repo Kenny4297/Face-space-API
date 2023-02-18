@@ -1,3 +1,4 @@
+const Thought = require('../models/Thought');
 const User = require('../models/User');
 
 module.exports = {
@@ -58,6 +59,7 @@ module.exports = {
             }   
     },
 
+    //Delete a user and remove the users associated thoughts when deleted
     async deleteUser(req, res) {
             try { 
                 //The "select('-__v')"  thing here is to avoid finding the "version" field that is added to each document
@@ -65,10 +67,14 @@ module.exports = {
                 if (!findUserToDelete) {
                     res.status(404).json({ message: "No User with that ID"});
                 }
-                res.json({ message: "User Deleted" });
+
+                //Delete all the associated  thoughts of the user we found in the last query, up above
+                await Thought.deleteMany({ username: deletedUser.username});
+
+                res.json({ message: "User, and associated thoughts, deleted" });
             } catch (err) {
                 console.log(err);
                 res.status(500).json(err);
             }
-        },
+        }
 }

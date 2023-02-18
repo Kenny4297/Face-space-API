@@ -22,44 +22,6 @@ connection.once('open', async () => {
     const reactions = [];
 
     //Creating individual instances
-    const user1 = await User.create(
-    {
-        username: "Kenny",
-        email: "Kenny@gmail.com",
-        thoughts: [
-            {
-                thoughtText: "This is Kenny's thought!",
-                createdAt: new Date(),
-                username: "Kenny",
-                reactions: [
-                    {
-                        reactionBody: "Oh yeah!",
-                        username: "Kenny",
-                        createdAt: new Date()
-                    }
-                ]
-            }
-        ]
-    },
-        (err) => (err ? handleError(err) : console.log('Created new document'))
-    );
-
-    const thought1 = await Thought.create( 
-        {
-            thoughtText: "This is a thought",
-            createdAt: new Date(),
-            username: "Kenny",
-            reactions: [
-                {
-                    reactionBody: "Totally!",
-                    username: "Kenny",
-                    createdAt: new Date()
-                }
-            ]
-        },
-        (err) => (err ? handleError(err) : console.log('Created new document'))
-    );
-
     const reaction1 = await Reaction.create(
         {
             reactionBody: "This is my reaction",
@@ -69,13 +31,32 @@ connection.once('open', async () => {
         (err) => (err ? handleError(err) : console.log('Created new document'))
     );
 
+    const thought1 = await Thought.create( 
+        {
+            thoughtText: "This is a thought",
+            createdAt: new Date(),
+            username: "Kenny",
+            reactions: [reaction1._id]
+        },
+        (err) => (err ? handleError(err) : console.log('Created new document'))
+    );
+
+    const user1 = await User.create(
+    {
+        username: "Kenny",
+        email: "Kenny@gmail.com",
+        thoughts: [thought1._id]
+    },
+        (err) => (err ? handleError(err) : console.log('Created new document'))
+    );
+
     users.push(user1);
     thoughts.push(thought1);
     reactions.push(reaction1);
 
     await User.collection.insertMany(users);
-    await Thoughts.collection.insertMany(thoughts);
-    await Reactions.collection.insertMany(reactions);
+    await Thought.collection.insertMany(thoughts);
+    await Reaction.collection.insertMany(reactions);
 
     // loop through the saved videos, for each video we need to generate a video response and insert the video responses
     //? Is the following necessary for this seed file?

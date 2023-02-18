@@ -28,4 +28,7 @@ router.route('/:ThoughtId').put(updateThought);
 //^ Delete Thought
 router.route('/:ThoughtId').delete(deleteThought);
 
+//  /api/thoughts/:thoughtId/reactions
+// AWAITING TESTING ROUTES FOR BETTER VISUALIZATION OF ROUTE
+
 module.exports = router;

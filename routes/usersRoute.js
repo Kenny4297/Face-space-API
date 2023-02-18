@@ -8,23 +8,26 @@ const {
 } = require('../controllers/userController');
 
 // /api/users
-//! Get all users
+//^ Get all users
 router.route('/').get(getUsers);
 
 // /api/users/:userId
-//! Get single User
+//^ Get single User
 router.route('/:userId').get(getSingleUser);
 
 // /api/users/
-//! Create User
+//^ Create User
 router.route('/').post(createUser);
 
 // /api/users/:userId
-//! Update User
+//^ Update User
 router.route('/:userId').put(updateUser);
 
 // /api/users/:userId
-//! Delete user
+//^ Delete user
 router.route('/:userId').delete(deleteUser);
+
+// /api/users/:userId/friends/:friend
+// AWAITING SEEDING FIRST BEFORE THIS IS EXECUTED FOR BETTER VISUALIZATION OF WHAT'S GOING ON
 
 module.exports = router;
