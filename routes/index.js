@@ -3,8 +3,8 @@ const usersRoutes = require('./usersRoute');
 const thoughtsRoutes = require('./thoughtsRoute');
 // const reactionsRoutes = require('./reactionsRoutes');
 
-router.use('/users', usersRoutes);
-router.use('/thoughts', thoughtsRoutes);
+router.use('/api/users', usersRoutes);
+router.use('/api/thoughts', thoughtsRoutes);
 // router.use('/reactions', reactionsRoutes);
 
 router.use((req, res) => {

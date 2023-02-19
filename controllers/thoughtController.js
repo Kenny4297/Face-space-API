@@ -1,5 +1,6 @@
 const Thought = require('../models/Thought');
 const User = require('../models/User');
+const Reaction = require('../models/Reaction');
 
 module.exports = {
     async getThoughts(req, res) {
@@ -30,7 +31,6 @@ module.exports = {
     async createThought(req, res) {
         try {
             const { thoughtText, username, userId } = req.body;
-            console.log(username, userId);
 
             const newThought = await Thought.create({ thoughtText, username });
 
@@ -80,5 +80,24 @@ module.exports = {
                 console.log(err);
                 res.status(500).json(err);
             }
-        },
+    },
+
+    async createReaction(req, res) {
+        try {
+            const findThought = await Thought.findOne({_id: req.params.thoughtId}).populate('reactions');
+
+            const createReaction = await Reaction.create({
+                reactionBody: req.body.reactionBody,
+                username: findThought.username
+            })
+
+            findThought.reactions.push(createReaction);
+
+            res.send(findThought)
+
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
+    }
 }
