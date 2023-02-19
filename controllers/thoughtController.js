@@ -88,7 +88,7 @@ module.exports = {
         try {
             const findThought = await Thought.findOneAndUpdate(
                 { _id: thoughtId },
-                { $push: reactionsBody});
+                { $push: reactionsBody}).populate('reactions');
 
             res.send(findThought)
 
