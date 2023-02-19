@@ -1,5 +1,7 @@
 const express = require('express');
 const db = require('./config/connection');
+const Reaction = require('./models/Reaction')
+
 const routes = require('./routes');
 
 const cwd = process.cwd();

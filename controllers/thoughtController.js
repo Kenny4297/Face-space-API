@@ -83,15 +83,12 @@ module.exports = {
     },
 
     async createReaction(req, res) {
+        const thoughtId = req.params.thoughtId;
+        const reactionsBody = req.body;
         try {
-            const findThought = await Thought.findOne({_id: req.params.thoughtId}).populate('reactions');
-
-            const createReaction = await Reaction.create({
-                reactionBody: req.body.reactionBody,
-                username: findThought.username
-            })
-
-            findThought.reactions.push(createReaction);
+            const findThought = await Thought.findOneAndUpdate(
+                { _id: thoughtId },
+                { $push: reactionsBody});
 
             res.send(findThought)
 
