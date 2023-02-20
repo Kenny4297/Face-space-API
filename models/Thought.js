@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const reactionSchema = require('./Reaction');
 
 const thoughtSchema = new Schema({
     thoughtText: {
@@ -30,11 +31,7 @@ const thoughtSchema = new Schema({
     },
 
     //When you create a Thought document and want to associate a reaction with it, you would create a new object following the reactionSchema and push it onto the reactions array of the Thought document.
-    reactions: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Reaction'
-        }]
+    reactions: [reactionSchema]
 });
 
 const Thought = model('thought', thoughtSchema);

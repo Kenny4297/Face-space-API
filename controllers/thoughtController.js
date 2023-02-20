@@ -1,6 +1,6 @@
 const Thought = require('../models/Thought');
 const User = require('../models/User');
-const Reaction = require('../models/Reaction');
+// const Reaction = require('../models/Reaction');
 
 module.exports = {
     async getThoughts(req, res) {
@@ -39,8 +39,6 @@ module.exports = {
                 { new: true }
             );
 
-            console.log(newThought);
-
             res.json(newThought);
         } catch (err) {
             console.log(err);
@@ -57,7 +55,6 @@ module.exports = {
                 { new: true }
             );
 
-            console.log(updatedThought)
             if (!updatedThought) {
                 res.status(404).json({ message: "No thought with that ID "});
             }
@@ -85,17 +82,26 @@ module.exports = {
     //Original function
     async createReaction(req, res) {
         try {
-            const findThought = await Thought.findOne({_id: req.params.thoughtId});
+            const findThought = await Thought.findByIdAndUpdate(req.params.thoughtId,
+                { $addToSet: { reactions: {username: req.body.username, reactionBody: req.body.reactionBody}}},
+                { new: true });
 
-            const createReaction = await Reaction.create({
-                reactionBody: req.body.reactionBody,
-                username: findThought.username
-            })
+            res.json(findThought)
 
-            console.log(createReaction);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
+    },
 
-            findThought.reactions.push(createReaction);
+    async deleteReaction(req, res) {
+        console.log("deleteReactions function firing")
+        try {
+            const findThought = await Thought.findByIdAndUpdate(req.params.thoughtId,
+                { $pull: { reactions: { reactionId: req.body.reactionId }}},
+                { new: true });
 
+            // console.log(findThought)
             res.json(findThought)
 
         } catch (err) {
