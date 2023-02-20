@@ -95,9 +95,9 @@ module.exports = {
     },
 
     async deleteReaction(req, res) {
-        console.log("deleteReactions function firing")
         try {
             const findThought = await Thought.findByIdAndUpdate(req.params.thoughtId,
+                //Notice the difference between $deleteOne (used with documents) and $pull (used for arrays inside documents)
                 { $pull: { reactions: { reactionId: req.body.reactionId }}},
                 { new: true });
 
