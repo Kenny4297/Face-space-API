@@ -39,9 +39,9 @@ module.exports = {
                 { new: true }
             );
 
-            console.log(getUser);
+            console.log(newThought);
 
-            res.json(getUser);
+            res.json(newThought);
         } catch (err) {
             console.log(err);
             res.status(500).json(err);
@@ -92,6 +92,8 @@ module.exports = {
                 username: findThought.username
             })
 
+            console.log(createReaction);
+
             findThought.reactions.push(createReaction);
 
             res.json(findThought)
@@ -100,42 +102,5 @@ module.exports = {
             console.log(err);
             res.status(500).json(err);
         }
-    },
-
-    //LA function
-    // async createReaction(req, res) {
-    //     const thoughtId = req.params.thoughtId;
-    //     const reactionsBody = req.body;
-    //     try {
-    //         const findThought = await Thought.findOneAndUpdate(
-    //             { _id: thoughtId },
-    //             { $push: reactionsBody}).populate('reaction');
-
-    //         res.send(findThought)
-
-    //     } catch (err) {
-    //         console.log(err);
-    //         res.status(500).json(err);
-    //     }
-    // }
+    }
 }
-
-// Original function
-// async createReaction(req, res) {
-//     try {
-//         const findThought = await Thought.findOne({_id: req.params.thoughtId}).populate('reactions');
-
-//         const createReaction = await Reaction.create({
-//             reactionBody: req.body.reactionBody,
-//             username: findThought.username
-//         })
-
-//         findThought.reactions.push(createReaction);
-
-//         res.send(findThought)
-
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).json(err);
-//     }
-// }
